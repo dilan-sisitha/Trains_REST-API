@@ -19,6 +19,7 @@ public class RestController {
     private TrainDetailsRepository trainDetailsRepository;
 
 
+
     // http://localhost:8080/demo/shedules?refno=1105
     @GetMapping(path = "/shedules")
     public @ResponseBody
@@ -44,6 +45,20 @@ public class RestController {
         TrainDetails trainDetails = new TrainDetails();
         return trainDetailsRepository.findByRefno(refno);
 
+    }
+
+
+    // http://localhost:8080/demo/checkrefno?refno=1005
+    private static int Status = 0;
+
+    @GetMapping(path = "/checkrefno")
+    public @ResponseBody
+    int checkref(@RequestParam String refno) {
+        List<TrainDetails> details = trainDetailsRepository.findByRefno(refno);
+        if (details.isEmpty())
+            return 0;
+        else
+            return 1;
     }
 
 
