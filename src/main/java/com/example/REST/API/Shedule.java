@@ -13,8 +13,8 @@ public class Shedule {
     @Column(name = "refno")
     private String refno;
 
-    @Column(name = "staion")
-    private String staion;
+    @Column(name = "station")
+    private String station;
 
     @Column(name = "arrival")
     private String arrival;
@@ -37,12 +37,12 @@ public class Shedule {
         this.id = id;
     }
 
-    public String getStaion() {
-        return staion;
+    public String getStation() {
+        return station;
     }
 
-    public void setStaion(String staion) {
-        this.staion = staion;
+    public void setStation(String station) {
+        this.station = station;
     }
 
     public String getArrival() {
