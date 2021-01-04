@@ -28,6 +28,12 @@ public class Shedule {
     @Column(name = "crossing")
     private String crossing;
 
+    @Column(name = "pt")
+    private String pt;
+
+    @Column(name = "other")
+    private String other;
+
 
     public int getId() {
         return id;
@@ -83,5 +89,21 @@ public class Shedule {
 
     public void setCrossing(String crossing) {
         this.crossing = crossing;
+    }
+
+    public String getPt() {
+        return pt;
+    }
+
+    public void setPt(String pt) {
+        this.pt = pt;
+    }
+
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
     }
 }

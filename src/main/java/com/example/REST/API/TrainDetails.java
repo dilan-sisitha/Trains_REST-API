@@ -20,8 +20,11 @@ public class TrainDetails {
     @Column(name = "form_no")
     private String form_no;
 
-    @Column(name = "pt")
-    private String pt;
+    @Column(name = "other")
+    private String other;
+
+    @Column(name = "info")
+    private String info;
 
 
     public int getId() {
@@ -56,11 +59,19 @@ public class TrainDetails {
         this.form_no = form_no;
     }
 
-    public String getPt() {
-        return pt;
+    public String getOther() {
+        return other;
     }
 
-    public void setPt(String pt) {
-        this.pt = pt;
+    public void setOther(String other) {
+        this.other = other;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

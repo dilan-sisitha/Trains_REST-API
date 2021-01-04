@@ -18,7 +18,10 @@ public class RestController {
     @Autowired
     private TrainDetailsRepository trainDetailsRepository;
 
-    // http://localhost:8080/demo/checkuser?email=admin&password=123
+    @Autowired
+    private UserRepository userRepository;
+
+
     private static int Status = 0;
 
 
@@ -31,8 +34,7 @@ public class RestController {
 
     }
 
-    @Autowired
-    private UserRepository userRepository;
+
 
     // http://localhost:8080/demo/details?refno=1005
     @GetMapping(path = "/details")
@@ -61,8 +63,26 @@ public class RestController {
     @GetMapping(path = "/allshedules")
     public @ResponseBody
     Iterable<Shedule> getShedule() {
-        //Shedule shedule =new Shedule();
+
         return sheduleRepository.findAll();
+
+    }
+
+    //http://localhost:8080/demo/allusers
+    @GetMapping(path = "/allusers")
+    public @ResponseBody
+    Iterable<User> getUsers() {
+
+        return userRepository.findAll();
+
+    }
+
+    //http://localhost:8080/demo/alltraindetails
+    @GetMapping(path = "/alltraindetails")
+    public @ResponseBody
+    Iterable<TrainDetails> getTrains() {
+
+        return trainDetailsRepository.findAll();
 
     }
 
@@ -109,7 +129,8 @@ public class RestController {
     @GetMapping(path = "/addshedule")
     public @ResponseBody
     String addShedule(@RequestParam String refno, @RequestParam String station, @RequestParam String arrival,
-                      @RequestParam String departure, @RequestParam String crossing, @RequestParam String park) {
+                      @RequestParam String departure, @RequestParam String crossing, @RequestParam String park,
+                      @RequestParam String pt, @RequestParam String other) {
 
         Shedule shedule = new Shedule();
         shedule.setRefno(refno);
@@ -118,10 +139,29 @@ public class RestController {
         shedule.setDeparture(departure);
         shedule.setCrossing(crossing);
         shedule.setPark(park);
+        shedule.setPt(pt);
+        shedule.setOther(other);
 
         sheduleRepository.save(shedule);
 
         return "Shedule added";
+    }
+
+    // http://localhost:8080/demo/adddetail?refno=0000&details=detail1&formno=form1&info=pt01&other=informationishere
+    @GetMapping(path = "/adddetail")
+    public @ResponseBody
+    String addDetail(@RequestParam String refno, @RequestParam String details, @RequestParam String formno, @RequestParam String info, @RequestParam String other) {
+
+        TrainDetails trainDetails = new TrainDetails();
+        trainDetails.setRefno(refno);
+        trainDetails.setDetails(details);
+        trainDetails.setForm_no(formno);
+        trainDetails.setInfo(info);
+        trainDetails.setOther(other);
+
+
+        trainDetailsRepository.save(trainDetails);
+        return "detial added";
     }
 
 }
