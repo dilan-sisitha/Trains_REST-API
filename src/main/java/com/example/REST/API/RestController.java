@@ -21,8 +21,8 @@ public class RestController {
     @Autowired
     private UserRepository userRepository;
 
-
-    private static int Status = 0;
+    //http://localhost:8080/demo/checkuser?email=admin&password=123&deviceid=PPR1.180610.011
+    private static int status = 0;
 
 
     // http://localhost:8080/demo/shedules?refno=1105
@@ -86,9 +86,14 @@ public class RestController {
 
     }
 
+    //http://localhost:8080/demo/checklogin?email=aaa&deviceid=saa
+    int loginstatus;
+    @Autowired
+    private UserLoginRepository userLoginRepository;
+
     @GetMapping(path = "/checkuser")
     public @ResponseBody
-    int adduser(@RequestParam String email, @RequestParam String password) {
+    int checkuser(@RequestParam String email, @RequestParam String password, @RequestParam String deviceid) {
 
 
         List<User> userslist = userRepository.findByEmail(email);
@@ -96,18 +101,67 @@ public class RestController {
             for (User u : userslist) {
                 String pass = u.getPassword();
                 if (pass.equals(password)) {
-                    Status = 1;
+                    //if email and passowrd is correct
+                    List<UserLogin> userLoginList = userLoginRepository.findByEmail(email);
+                    if (!userLoginList.isEmpty()) {
+                        for (UserLogin login : userLoginList) {
+                            String id = login.getDeviceId();
+                            if (id.equals(deviceid)) {
+                                //  loginstatus ="device matches with email";
+                                status = 100;
+
+                            } else {
+                                //loginstatus = "new device with same email";
+                                status = 101;
+                            }
+
+                        }
+                    } else {
+                        //loginstatus="no users with the email new user";
+                        status = 100;
+                    }
+
 
                 } else {
-                    Status = 0;
+                    //email and password doesn't match
+                    status = 104;
                 }
 
             }
         } else {
-            Status = 0;
+
+            //no such email
+            status = 105;
         }
 
-        return Status;
+        return status;
+    }
+
+    @GetMapping(path = "/checklogin")
+    public @ResponseBody
+    int checklogin(@RequestParam String email, @RequestParam String deviceid) {
+
+
+        List<UserLogin> userLoginList = userLoginRepository.findByEmail(email);
+        if (!userLoginList.isEmpty()) {
+            for (UserLogin u : userLoginList) {
+                String id = u.getDeviceId();
+                if (id.equals(deviceid)) {
+                    //  loginstatus ="device matches with email";
+                    loginstatus = 1;
+
+                } else {
+                    //loginstatus = "new device with same email";
+                    loginstatus = 0;
+                }
+
+            }
+        } else {
+            //loginstatus="no users with the email";
+            loginstatus = 1;
+        }
+
+        return loginstatus;
     }
 
 
@@ -162,6 +216,25 @@ public class RestController {
 
         trainDetailsRepository.save(trainDetails);
         return "detial added";
+    }
+
+    // http://localhost:5000/demo/logindetail?email=myemail&deviceid=d0001&android=a0001&brand=brand01&model=model01&date=2021
+    @GetMapping(path = "/logindetail")
+    public @ResponseBody
+    String addLoginDetails(@RequestParam String email, @RequestParam String deviceid, @RequestParam String android,
+                           @RequestParam String brand, @RequestParam String model, @RequestParam String date) {
+
+        UserLogin userLogin = new UserLogin();
+        userLogin.setEmail(email);
+        userLogin.setDeviceId(deviceid);
+        userLogin.setAndroidId(android);
+        userLogin.setBrand(brand);
+        userLogin.setModel(model);
+        userLogin.setDateTime(date);
+
+
+        userLoginRepository.save(userLogin);
+        return "login detial added";
     }
 
 }
