@@ -16,6 +16,10 @@ public class Shedule {
     @Column(name = "station")
     private String station;
 
+    @Column(name = "sub_station")
+    private String sub_station;
+
+
     @Column(name = "arrival")
     private String arrival;
 
@@ -105,5 +109,13 @@ public class Shedule {
 
     public void setOther(String other) {
         this.other = other;
+    }
+
+    public String getSub_station() {
+        return sub_station;
+    }
+
+    public void setSub_station(String sub_station) {
+        this.sub_station = sub_station;
     }
 }

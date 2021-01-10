@@ -182,7 +182,7 @@ public class RestController {
     // http://localhost:8080/demo/addshedule?refno=0000&station=DIL&arrival=11.11&departure=11.11&crossing11.11&park=11.11
     @GetMapping(path = "/addshedule")
     public @ResponseBody
-    String addShedule(@RequestParam String refno, @RequestParam String station, @RequestParam String arrival,
+    String addShedule(@RequestParam String refno, @RequestParam String station, @RequestParam String sub_station, @RequestParam String arrival,
                       @RequestParam String departure, @RequestParam String crossing, @RequestParam String park,
                       @RequestParam String pt, @RequestParam String other) {
 
@@ -195,6 +195,7 @@ public class RestController {
         shedule.setPark(park);
         shedule.setPt(pt);
         shedule.setOther(other);
+        shedule.setSub_station(sub_station);
 
         sheduleRepository.save(shedule);
 
